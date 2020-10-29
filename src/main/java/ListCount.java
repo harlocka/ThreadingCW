@@ -22,8 +22,8 @@ public class ListCount {
      */
     public ListCount() throws InterruptedException {
         // Setup
-        //userSetParameters();
-        autoSetParameters();
+        userSetParameters();
+        //autoSetParameters();
 
         // Execution
         long startTime = System.currentTimeMillis();
@@ -51,9 +51,9 @@ public class ListCount {
      */
     public void autoSetParameters() {
         bufferCapacity = 20;
-        numUsers = 113;
-        numServers = 111;
-        numElementsToAdd = 1000;
+        numUsers = 10;
+        numServers = 10;
+        numElementsToAdd = 100;
     }
 
     /**
@@ -170,9 +170,10 @@ public class ListCount {
      * Creates user threads
      */
     private void createUserThreads() {
-        int numElements = numElementsToAdd / numUsers;
+        int numElements = (numElementsToAdd / numUsers);
+        int remainder = (numElementsToAdd % numUsers);
         for (int i = 0; i < numUsers; i++) {
-            int elementsPerUser = distributeElements(i, numElements);
+            int elementsPerUser = calculateElementNums(i, numElements, remainder);
             User new_user = new User(i, elementsPerUser, b);
             users.add(new_user);
         }
@@ -183,8 +184,9 @@ public class ListCount {
      */
     private void createServerThreads() {
         int numElements = numElementsToAdd / numServers;
+        int remainder = (numElementsToAdd % numServers);
         for (int i = 0; i < numServers; i++) {
-            int elementsPerServer = distributeElements(i, numElements);
+            int elementsPerServer = calculateElementNums(i, numElements, remainder);
             Server new_Server = new Server(i, elementsPerServer, b);
             servers.add(new_Server);
         }
@@ -237,14 +239,41 @@ public class ListCount {
     }
 
     /**
-     * Distributes the number of elements evenly
+     * Gets the number of elements to be added by a specific user/server
      * @param index The index
+     * @param numElementsPer The number of elements to be added by the user/server
+     * @param remainder The number of elements that dont fit into the elements / user division
      * @return The number of elements to be added/removed
      */
-    private int distributeElements(int index, int numElements) {
-        if (numElements > 0) {
-            return numElements;
+    private int calculateElementNums(int index, int numElementsPer, int remainder) {
+        if (numElementsPer > 0) {
+            return getElementNumGreaterThanOne(index, numElementsPer, remainder);
         }
+        return getElementNumLessThanOne(index);
+    }
+
+    /**
+     * Gets the number of elements to be added by a specific user/server when there is more than one element
+     * for every user/server
+     * @param index The user/servers index
+     * @param numElementsPer The number of elements to be added by the user/server
+     * @param remainder The number of elements that dont fit into the elements / user division
+     * @return The number of elements to be added/removed
+     */
+    private int getElementNumGreaterThanOne(int index, int numElementsPer, int remainder) {
+        if (index < remainder) {
+            return numElementsPer+1;
+        }
+        return numElementsPer;
+    }
+
+    /**
+     * Gets the number of elements to be added by a specific user/server when there is less than one element
+     * for every user/server
+     * @param index The user/servers index
+     * @return The number of elements to be added/removed
+     */
+    private int getElementNumLessThanOne(int index) {
         if (index < numElementsToAdd) {
             return 1;
         }

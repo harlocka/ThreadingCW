@@ -8,10 +8,7 @@ public class Buffer
     private final LinkedList<Object> bufferList; // List representing the elements on the buffer
     private int numElementsInBuffer = 0;		 // Number of elements currently on the queue
     private final int bufferCapacity;			 // Maximum number of elements allowed on the queue
-    private final MySemaphore semaphore;         // Maximum number of elements allowed on the queue private final BooleanSemaphore semaphore;
-    private boolean bufferFull = false;          // True if the buffer is currently full, False otherwise
-    private boolean bufferEmpty = false;         // True if the buffer is currently empty, False otherwise
-
+    private final MySemaphore semaphore;         // Maximum number of elements allowed on the queue
 
     /**
      * A Buffer acting as a queue, from which elements can be added and removed
@@ -91,24 +88,6 @@ public class Buffer
      */
     public int getNumElementsInBuffer() {
         return numElementsInBuffer;
-    }
-
-    /**
-     * Switches the state of the buffer from full to not full and vice versa -
-     * If currently True; becomes False
-     * If currently False; becomes True
-     */
-    private void updateBufferFullStatus() {
-        bufferFull = !bufferFull;
-    }
-
-    /**
-     * Switches the state of the buffer from empty to not empty and vice versa -
-     * If currently True; becomes False
-     * If currently False; becomes True
-     */
-    private void updateBufferEmptyStatus() {
-        bufferEmpty = !bufferEmpty;
     }
 
     /**

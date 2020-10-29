@@ -18,7 +18,6 @@ public class Server extends Thread implements Runnable
      * @param elementsToRemove Number of elements to be removed from the buffer
      */
     public Server(int id, long elementsToRemove, Buffer buffer) {
-        System.out.println("Elems to remove: " + elementsToRemove);
         this.id = id + 1;
         this.buffer = buffer;
         bufferCapacity = buffer.getBufferCapacity();
@@ -64,7 +63,7 @@ public class Server extends Thread implements Runnable
      * Displays information about the most recent element removed from the buffer by the Server
      */
     public void displayRemoveInfo() {
-        System.out.println("Server " + id + " removed element " + (buffer.getNumElementsInBuffer()+1) + "/" + bufferCapacity);
+        System.out.println("Server " + id + " removed element " + (buffer.getNumElementsInBuffer()) + "/" + bufferCapacity);
     }
 
     public void displayBufferEmpty() {
