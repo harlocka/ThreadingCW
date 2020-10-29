@@ -22,8 +22,8 @@ public class ListCount {
      */
     public ListCount() throws InterruptedException {
         // Setup
-        userSetParameters();
-        //autoSetParameters();
+        //userSetParameters();
+        autoSetParameters();
 
         // Execution
         long startTime = System.currentTimeMillis();

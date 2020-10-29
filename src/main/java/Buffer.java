@@ -10,7 +10,10 @@ public class Buffer
     private final LinkedList<Object> bufferList; // List representing the elements on the buffer
     private int numElementsInBuffer = 0;		 // Number of elements currently on the queue
     private final int bufferCapacity;			 // Maximum number of elements allowed on the queue
-    private final BooleanSemaphore semaphore;    // Maximum number of elements allowed on the queueprivate final BooleanSemaphore semaphore;
+    private final MySemaphore semaphore;         // Maximum number of elements allowed on the queue private final BooleanSemaphore semaphore;
+
+    private boolean bufferFull = false;
+    private boolean bufferEmpty = false;
 
 
     /**
@@ -20,7 +23,7 @@ public class Buffer
     public Buffer(int bufferCapacity) {
         this.bufferList = new LinkedList<>();
         this.bufferCapacity = bufferCapacity;
-        this.semaphore = new BooleanSemaphore(1);
+        this.semaphore = new MySemaphore(1);
     }
 
     /**
@@ -31,12 +34,14 @@ public class Buffer
     public boolean attemptAdd(User user, int newElement) throws InterruptedException {
         semaphore.acquire(); // Attempt to acquire the lock
         if (numElementsInBuffer < bufferCapacity) {
+            bufferFull = false;
             add(user, newElement);
             semaphore.release(); // Release the lock
             return true;
         }
-        else {
-            System.out.println("Buffer full - User now sleeping");
+        else if (!bufferFull) {
+            bufferFull = true;
+            user.displayBufferFull();
         }
         semaphore.release(); // Release the lock
         return false;
@@ -49,12 +54,14 @@ public class Buffer
     public boolean attemptRemove(Server server) throws InterruptedException {
         semaphore.acquire(); // Attempt to acquire the lock
         if (numElementsInBuffer > 0) {
+            bufferEmpty = false;
             remove(server);
             semaphore.release(); // Release the lock
             return true;
         }
-        else {
-            System.out.println("Buffer empty - web server wait");
+        else if (!bufferEmpty){
+            bufferEmpty = true;
+            server.displayBufferEmpty();
         }
         semaphore.release(); // Release the lock
         return false;

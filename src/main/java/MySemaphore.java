@@ -2,7 +2,7 @@
  * This class represents a semaphore that controls access to a buffer accessed concurrently by many threads
  * @author Alex Harlock
  */
-public class BooleanSemaphore {
+public class MySemaphore {
 
     private boolean locked;
 
@@ -10,7 +10,7 @@ public class BooleanSemaphore {
      * A semaphore to control multiple thread access to a critical section of code
      * @param bound Should be equal to 1 to allow mutual exclusion
      */
-    public BooleanSemaphore(int bound) {
+    public MySemaphore(int bound) {
         locked = (bound == 0);
     }
 

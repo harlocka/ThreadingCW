@@ -54,6 +54,10 @@ public class User extends Thread implements Runnable
         System.out.println("User " + id + " adds an element " + buffer.getNumElementsInBuffer() + "/" + bufferCapacity);
     }
 
+    public void displayBufferFull() {
+        System.out.println("Buffer full - User now sleeping");
+    }
+
     /**
      * Gets the number of elements added to the buffer by the User
      * @return An integer value equal to the number of elements that have been added to the buffer by the user

@@ -8,7 +8,7 @@ public class Server extends Thread implements Runnable
     private int elementsRemoved = 0;         // Number of elements the Server has removed from the buffer
     public static Buffer buffer;             // Instance of the buffer being added to
     private final int bufferCapacity;        // Maximum number of elements able to be held in the buffer
-    private boolean threadComplete = false;          // True if the thread is able to complete; False otherwise
+    private boolean threadComplete = false;  // True if the thread is able to complete; False otherwise
     private long elementsToRemove;
 
     /**
@@ -63,6 +63,10 @@ public class Server extends Thread implements Runnable
      */
     public void displayRemoveInfo() {
         System.out.println("Server " + id + " removed element " + (buffer.getNumElementsInBuffer()+1) + "/" + bufferCapacity);
+    }
+
+    public void displayBufferEmpty() {
+        System.out.println("Buffer empty - web server wait");
     }
 
     /**
