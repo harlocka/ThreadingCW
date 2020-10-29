@@ -17,7 +17,8 @@ public class Server extends Thread implements Runnable
      * @param buffer Buffer to add to
      * @param elementsToRemove Number of elements to be removed from the buffer
      */
-    public Server(int id, Buffer buffer, long elementsToRemove) {
+    public Server(int id, long elementsToRemove, Buffer buffer) {
+        System.out.println("Elems to remove: " + elementsToRemove);
         this.id = id + 1;
         this.buffer = buffer;
         bufferCapacity = buffer.getBufferCapacity();

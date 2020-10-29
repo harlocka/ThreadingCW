@@ -32,14 +32,13 @@ public class Buffer
     public boolean attemptAdd(User user, int newElement) throws InterruptedException {
         semaphore.acquire(); // Attempt to acquire the lock
         if (numElementsInBuffer < bufferCapacity) {
-            updateBufferFullStatus();
-            bufferFull = false;
+            semaphore.updateBufferFullStatus();
             add(user, newElement);
             semaphore.release(); // Release the lock
             return true;
         }
-        else if (!bufferFull) {
-            updateBufferFullStatus();
+        else if (!semaphore.getBufferFull()) {
+            semaphore.updateBufferFullStatus();
             user.displayBufferFull();
         }
         semaphore.release(); // Release the lock
@@ -54,13 +53,13 @@ public class Buffer
     public boolean attemptRemove(Server server) throws InterruptedException {
         semaphore.acquire(); // Attempt to acquire the lock
         if (numElementsInBuffer > 0) {
-            updateBufferEmptyStatus();
+            semaphore.updateBufferEmptyStatus();
             remove(server);
             semaphore.release(); // Release the lock
             return true;
         }
-        else if (!bufferEmpty){
-            updateBufferEmptyStatus();
+        else if (!semaphore.getBufferEmpty()){
+            semaphore.updateBufferEmptyStatus();
             server.displayBufferEmpty();
         }
         semaphore.release(); // Release the lock

@@ -5,6 +5,8 @@
 public class MySemaphore {
 
     private boolean locked; // True if the lock is held; False otherwise
+    private boolean bufferFull = false;
+    private boolean bufferEmpty = false;
 
     /**
      * A semaphore to control multiple thread access to a critical section of code
@@ -32,5 +34,31 @@ public class MySemaphore {
             notify();
         }
         locked = false;
+    }
+
+    public boolean getBufferFull() {
+        return bufferFull;
+    }
+
+    public boolean getBufferEmpty() {
+        return bufferEmpty;
+    }
+
+    /**
+     * Switches the state of the buffer from full to not full and vice versa -
+     * If currently True; becomes False
+     * If currently False; becomes True
+     */
+    public void updateBufferFullStatus() {
+        bufferFull = !bufferFull;
+    }
+
+    /**
+     * Switches the state of the buffer from empty to not empty and vice versa -
+     * If currently True; becomes False
+     * If currently False; becomes True
+     */
+    public void updateBufferEmptyStatus() {
+        bufferEmpty = !bufferEmpty;
     }
 }

@@ -14,7 +14,7 @@ public class ListCount {
     private int bufferCapacity;                    // Maximum capacity of the buffer at any one time
     private int numUsers;                          // Number of users adding elements to the buffer
     private int numServers;                        // Number of servers removing elements from the buffer
-    private int numElementsToAdd;                  // Number of elements each user adds to the buffer
+    private int numElementsToAdd;                  // Total number of elements to add to the buffer
     private final long timeToComplete;             // Time taken in milliseconds for the program to execute
 
     /**
@@ -22,8 +22,8 @@ public class ListCount {
      */
     public ListCount() throws InterruptedException {
         // Setup
-        userSetParameters();
-        //autoSetParameters();
+        //userSetParameters();
+        autoSetParameters();
 
         // Execution
         long startTime = System.currentTimeMillis();
@@ -51,9 +51,9 @@ public class ListCount {
      */
     public void autoSetParameters() {
         bufferCapacity = 20;
-        numUsers = 10;
-        numServers = 10;
-        numElementsToAdd = 100;
+        numUsers = 113;
+        numServers = 111;
+        numElementsToAdd = 1000;
     }
 
     /**
@@ -107,7 +107,7 @@ public class ListCount {
      * Specifies number of elements added per user
      */
     private void setNumElements() {
-        System.out.println("Enter number of elements per user: ");
+        System.out.println("Enter total number of elements: ");
         numElementsToAdd = getUserInput();
     }
 
@@ -170,8 +170,10 @@ public class ListCount {
      * Creates user threads
      */
     private void createUserThreads() {
+        int numElements = numElementsToAdd / numUsers;
         for (int i = 0; i < numUsers; i++) {
-            User new_user = new User(i, numElementsToAdd, b);
+            int elementsPerUser = distributeElements(i, numElements);
+            User new_user = new User(i, elementsPerUser, b);
             users.add(new_user);
         }
     }
@@ -180,10 +182,27 @@ public class ListCount {
      * Creates server threads
      */
     private void createServerThreads() {
+        int numElements = numElementsToAdd / numServers;
         for (int i = 0; i < numServers; i++) {
-            Server new_Server = new Server(i, b, ((numUsers*numElementsToAdd) / numServers)+1);
+            int elementsPerServer = distributeElements(i, numElements);
+            Server new_Server = new Server(i, elementsPerServer, b);
             servers.add(new_Server);
         }
+    }
+
+    /**
+     * Distributes the number of elements evenly
+     * @param index The index
+     * @return The number of elements to be added/removed
+     */
+    private int distributeElements(int index, int numElements) {
+        if (numElements > 0) {
+            return numElements;
+        }
+        if (index < numElementsToAdd) {
+            return 1;
+        }
+        return 0;
     }
 
     /**
