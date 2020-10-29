@@ -4,7 +4,7 @@
  */
 public class MySemaphore {
 
-    private boolean locked;
+    private boolean locked; // True if the lock is held; False otherwise
 
     /**
      * A semaphore to control multiple thread access to a critical section of code

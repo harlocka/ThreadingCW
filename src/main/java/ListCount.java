@@ -9,21 +9,21 @@ public class ListCount {
     ArrayList<User> users = new ArrayList<>();     // The user threads
     ArrayList<Server> servers = new ArrayList<>(); // The server threads
 
-    private Buffer b;                              // Instance of the buffer
+    private final Buffer b;                        // Instance of the buffer
 
     private int bufferCapacity;                    // Maximum capacity of the buffer at any one time
     private int numUsers;                          // Number of users adding elements to the buffer
     private int numServers;                        // Number of servers removing elements from the buffer
     private int numElementsToAdd;                  // Number of elements each user adds to the buffer
-    private long timeToComplete;                   // Time taken in milliseconds for the program to execute
+    private final long timeToComplete;             // Time taken in milliseconds for the program to execute
 
     /**
      * Controls the execution of the main thread of the program
      */
     public ListCount() throws InterruptedException {
         // Setup
-        //userSetParameters();
-        autoSetParameters();
+        userSetParameters();
+        //autoSetParameters();
 
         // Execution
         long startTime = System.currentTimeMillis();
@@ -139,8 +139,7 @@ public class ListCount {
      * Displays number of elements added by each User thread
      */
     private void displayElementsAddedPerUser() {
-        for (int i = 0; i < users.size(); i++) {
-            User user = users.get(i);
+        for (User user : users) {
             System.out.println("User " + user.getId() + " created a total of " + user.getNumberOfElementsAdded());
         }
     }
@@ -149,8 +148,7 @@ public class ListCount {
      * Displays number of elements removed by each Server thread
      */
     private void displayElementsRemovedPerServer() {
-        for (int i = 0; i < servers.size(); i++) {
-            Server server = servers.get(i);
+        for (Server server : servers) {
             System.out.println("Consumer " + server.getId() + " consumed a total of " + server.getNumElementsRemoved() + " elements");
         }
     }
@@ -192,8 +190,8 @@ public class ListCount {
      * Starts user threads
      */
     private void startUserThreads() {
-        for (int i = 0; i < users.size(); i++) {
-            users.get(i).start();
+        for (User user : users) {
+            user.start();
         }
     }
 
@@ -201,8 +199,8 @@ public class ListCount {
      * Starts server threads
      */
     private void startServerThreads() {
-        for (int i = 0; i < servers.size(); i++) {
-            servers.get(i).start();
+        for (Server server : servers) {
+            server.start();
         }
     }
 
@@ -210,8 +208,8 @@ public class ListCount {
      * Waits for user threads to complete execution
      */
     private void waitForUserThreadsToFinish() throws InterruptedException {
-        for (int i = 0; i < users.size(); i++) {
-            users.get(i).join();
+        for (User user : users) {
+            user.join();
         }
         userThreadsComplete();
     }
@@ -220,8 +218,8 @@ public class ListCount {
      * Waits for server threads to complete execution
      */
     private void waitForServerThreadsToFinish() throws InterruptedException {
-        for (int i = 0; i < servers.size(); i++) {
-            servers.get(i).join();
+        for (Server server : servers) {
+            server.join();
         }
     }
 
@@ -229,8 +227,8 @@ public class ListCount {
      * Signals to all Server threads that all User threads have completed execution
      */
     public void userThreadsComplete() {
-        for (int i = 0; i < servers.size(); i++) {
-            servers.get(i).setThreadCompletionState(true);
+        for (Server server : servers) {
+            server.setThreadCompletionState(true);
         }
     }
 }

@@ -6,10 +6,10 @@ public class Server extends Thread implements Runnable
 {
     private final int id;                    // Id corresponding to the Servers thread
     private int elementsRemoved = 0;         // Number of elements the Server has removed from the buffer
-    public static Buffer buffer;             // Instance of the buffer being added to
+    private final long elementsToRemove;     // The number of elements the server will remove to create an even distribution of removals
+    public final Buffer buffer;              // Instance of the buffer being added to
     private final int bufferCapacity;        // Maximum number of elements able to be held in the buffer
     private boolean threadComplete = false;  // True if the thread is able to complete; False otherwise
-    private long elementsToRemove;
 
     /**
      * A Server tasked with removing elements from a given buffer

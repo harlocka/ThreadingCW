@@ -7,7 +7,7 @@ public class User extends Thread implements Runnable
     private final int id;                // Id corresponding to the Users thread
     private final int numElementsToAdd;  // Number of elements to add to the buffer
     private int elementsAdded = 0;       // Number of elements the User has added to the buffer
-    private static Buffer buffer;        // Instance of the buffer being added to
+    private final Buffer buffer;         // Instance of the buffer being added to
     private final int bufferCapacity;    // Maximum number of elements able to be held in the buffer
 
     /**
