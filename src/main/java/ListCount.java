@@ -191,21 +191,6 @@ public class ListCount {
     }
 
     /**
-     * Distributes the number of elements evenly
-     * @param index The index
-     * @return The number of elements to be added/removed
-     */
-    private int distributeElements(int index, int numElements) {
-        if (numElements > 0) {
-            return numElements;
-        }
-        if (index < numElementsToAdd) {
-            return 1;
-        }
-        return 0;
-    }
-
-    /**
      * Starts user threads
      */
     private void startUserThreads() {
@@ -249,5 +234,20 @@ public class ListCount {
         for (Server server : servers) {
             server.setThreadCompletionState(true);
         }
+    }
+
+    /**
+     * Distributes the number of elements evenly
+     * @param index The index
+     * @return The number of elements to be added/removed
+     */
+    private int distributeElements(int index, int numElements) {
+        if (numElements > 0) {
+            return numElements;
+        }
+        if (index < numElementsToAdd) {
+            return 1;
+        }
+        return 0;
     }
 }
