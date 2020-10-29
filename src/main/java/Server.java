@@ -15,6 +15,7 @@ public class Server extends Thread implements Runnable
      * A Server tasked with removing elements from a given buffer
      * @param id     Servers id corresponding to its thread number
      * @param buffer Buffer to add to
+     * @param elementsToRemove Number of elements to be removed from the buffer
      */
     public Server(int id, Buffer buffer, long elementsToRemove) {
         this.id = id + 1;

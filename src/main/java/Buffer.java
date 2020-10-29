@@ -27,6 +27,7 @@ public class Buffer
      * Attempts to add an element to the queue
      * @param user An instance of the User adding to the queue
      * @param newElement The element to be added to the queue
+     * @return True if add was successful; False otherwise
      */
     public boolean attemptAdd(User user, int newElement) throws InterruptedException {
         semaphore.acquire(); // Attempt to acquire the lock
@@ -48,6 +49,7 @@ public class Buffer
     /**
      * Attempts to remove an element from the end of the queue
      * @param server An instance of the server removing an element from the queue
+     * @return True if remove was successful; False otherwise
      */
     public boolean attemptRemove(Server server) throws InterruptedException {
         semaphore.acquire(); // Attempt to acquire the lock
